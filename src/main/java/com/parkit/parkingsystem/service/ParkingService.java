@@ -1,5 +1,6 @@
 package com.parkit.parkingsystem.service;
 
+import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
@@ -38,7 +39,7 @@ public class ParkingService {
 				parkingSpotDAO.updateParking(parkingSpot);// allot this parking space and mark it's availability as
 															// false
 
-				LocalDateTime inTime = LocalDateTime.now();
+				LocalDateTime inTime = LocalDateTime.now(Clock.systemUTC());
 				Ticket ticket = new Ticket();
 				// ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
 				// ticket.setId(ticketID);
@@ -105,7 +106,7 @@ public class ParkingService {
 		try {
 			String vehicleRegNumber = getVehichleRegNumber();
 			Ticket ticket = ticketDAO.getTicket(vehicleRegNumber);
-			LocalDateTime outTime = LocalDateTime.now();
+			LocalDateTime outTime = LocalDateTime.now(Clock.systemUTC());
 			ticket.setOutTime(outTime);
 			fareCalculatorService.calculateFare(ticket);
 			if (ticketDAO.updateTicket(ticket)) {
